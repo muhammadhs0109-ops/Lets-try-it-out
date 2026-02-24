@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .card h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .card p {
+            font-size: 18px;
+        }
+        canvas {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Revenue</h2>
+            <p id="revenue">$0</p>
+        </div>
+        <div class="card">
+            <h2>Users</h2>
+            <p id="users">0</p>
+        </div>
+        <div class="card">
+            <h2>Conversion Rate</h2>
+            <p id="conversion-rate">0%</p>
+        </div>
+        <div class="card">
+            <h2>Performance</h2>
+            <p id="performance">0%</p>
+        </div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function updateData() {
+            // Simulated data update
+            const revenue = Math.floor(Math.random() * 10000);
+            const users = Math.floor(Math.random() * 1000);
+            const conversionRate = Math.random() * 100;
+            const performance = Math.random() * 100;
+
+            document.getElementById('revenue').innerText = `$${revenue}`;
+            document.getElementById('users').innerText = users;
+            document.getElementById('conversion-rate').innerText = conversionRate.toFixed(2) + '%';
+            document.getElementById('performance').innerText = performance.toFixed(2) + '%';
+
+            // Update chart
+            myChart.data.datasets[0].data.push(revenue);
+            myChart.update();
+        }
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Revenue over Time',
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        setInterval(updateData, 5000);
+    </script>
+</body>
+</html>
